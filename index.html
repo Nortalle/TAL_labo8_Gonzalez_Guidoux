@@ -13150,8 +13150,11 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">import</span> <span class="nn">nltk.lm</span>
+<span class="kn">from</span> <span class="nn">nltk.lm.preprocessing</span> <span class="k">import</span> <span class="n">padded_everygram_pipeline</span>
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">codecs</span>
 <span class="kn">from</span> <span class="nn">urllib</span> <span class="k">import</span> <span class="n">request</span>
+<span class="kn">import</span> <span class="nn">random</span>
 
 <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
 </pre></div>
@@ -13358,7 +13361,7 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">filename1</span> <span class="o">=</span> <span class="s2">&quot;la_comedie_humaine.txt&quot;</span>
@@ -13379,33 +13382,6 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
-<span class="ansi-red-intense-fg ansi-bold">PermissionError</span>                           Traceback (most recent call last)
-<span class="ansi-green-intense-fg ansi-bold">&lt;ipython-input-8-351130ad9802&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">      2</span> 
-<span class="ansi-green-fg">      3</span> <span class="ansi-green-intense-fg ansi-bold">if</span> os<span class="ansi-yellow-intense-fg ansi-bold">.</span>path<span class="ansi-yellow-intense-fg ansi-bold">.</span>exists<span class="ansi-yellow-intense-fg ansi-bold">(</span>filename1<span class="ansi-yellow-intense-fg ansi-bold">)</span><span class="ansi-yellow-intense-fg ansi-bold">:</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 4</span><span class="ansi-yellow-intense-fg ansi-bold">     </span>os<span class="ansi-yellow-intense-fg ansi-bold">.</span>remove<span class="ansi-yellow-intense-fg ansi-bold">(</span>filename1<span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">      5</span> fd <span class="ansi-yellow-intense-fg ansi-bold">=</span> codecs<span class="ansi-yellow-intense-fg ansi-bold">.</span>open<span class="ansi-yellow-intense-fg ansi-bold">(</span>filename1<span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-blue-intense-fg ansi-bold">&#39;a&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span> <span class="ansi-blue-intense-fg ansi-bold">&#39;utf8&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">)</span>
-<span class="ansi-green-fg">      6</span> 
-
-<span class="ansi-red-intense-fg ansi-bold">PermissionError</span>: [WinError 32] Le processus ne peut pas accéder au fichier car ce fichier est utilisé par un autre processus: &#39;la_comedie_humaine.txt&#39;</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13418,6 +13394,129 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Segmenter-et-tokenizer-en-une-liste-de-listes-de-mots,-y-compris-les-ponctuations-(une-liste-=-une-phrase).">Segmenter et tokenizer en une liste de listes de mots, y compris les ponctuations (une liste = une phrase).<a class="anchor-link" href="#Segmenter-et-tokenizer-en-une-liste-de-listes-de-mots,-y-compris-les-ponctuations-(une-liste-=-une-phrase).">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#corpus_nettoye = corpus.replace(&#39;\r\n&#39;,&#39;&#39;) # on nettoie les retours à la ligne</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tokenized</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">sent_tokenize</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;french&quot;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Il y a </span><span class="si">{}</span><span class="s2"> phrases dans le corpus&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokenized</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Il y a 102216 phrases dans le corpus
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tokenized</span> <span class="o">=</span> <span class="p">[</span><span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">tokenized</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">word_nb</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">tokenized</span><span class="p">:</span>
+    <span class="n">word_nb</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Il y a </span><span class="si">{}</span><span class="s2"> mots dans ce corpus&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">word_nb</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Il y a 2335550 mots dans ce corpus
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Extraire un fragment (environ 2000 mots) qui servira de donnée de test.</p>
 
 </div>
@@ -13425,55 +13524,73 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">separate_train_test</span><span class="p">(</span><span class="n">sentences</span><span class="p">):</span>
+    
+    <span class="n">train_percentage</span> <span class="o">=</span> <span class="mf">0.03</span>
+
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
+    
+    <span class="n">sentences_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
+    
+    <span class="n">train_set_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span> <span class="o">*</span> <span class="n">train_percentage</span><span class="p">)</span>
+    
+    <span class="n">test_set</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">[</span> <span class="p">:</span><span class="n">train_set_length</span><span class="p">]</span>
+    
+    <span class="n">train_set</span> <span class="o">=</span> <span class="n">sentences</span><span class="p">[</span><span class="n">train_set_length</span><span class="p">:</span> <span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">train_set</span><span class="p">,</span> <span class="n">test_set</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Segmenter et tokenizer chacun des deux corpus (train/test) en une liste de listes de mots, y compris les ponctuations (une liste = une phrase).</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_set</span><span class="p">,</span> <span class="n">test_set</span> <span class="o">=</span> <span class="n">separate_train_test</span><span class="p">(</span><span class="n">tokenized</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Sauvegarder aussi chaque liste dans un fichier pickle.</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Il y a </span><span class="si">{}</span><span class="s2"> phrases dans le train_set et </span><span class="si">{}</span><span class="s2"> dans le test_set&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">train_set</span><span class="p">),</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">test_set</span><span class="p">)))</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Il y a 99150 phrases dans le train_set et 3066 dans le test_set
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13495,10 +13612,11 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.lm</span> <span class="k">import</span> <span class="n">MLE</span>
+<span class="kn">import</span> <span class="nn">time</span>
 </pre></div>
 
     </div>
@@ -13516,34 +13634,75 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">order</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Puis, par exemple, aller jusqu'à l'ordre 3 ou 4, avec l'algorithme de Laplace (ou de Kneser-Ney).</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">vocab</span> <span class="o">=</span> <span class="n">padded_everygram_pipeline</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">train_set</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lm</span> <span class="o">=</span> <span class="n">MLE</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">lm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">vocab</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cela a pris </span><span class="si">{:.3f}</span><span class="s2"> secondes pour entraîner le modèle d&#39;ordre </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="p">),</span> <span class="n">order</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Cela a pris 66.732 secondes pour entraîner le modèle d&#39;ordre 2
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13558,13 +13717,33 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lm</span><span class="o">.</span><span class="n">perplexity</span><span class="p">(</span><span class="n">test_set</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[21]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>inf</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13579,13 +13758,82 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">lm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[&#39;administration&#39;, &#39;de&#39;, &#39;deux&#39;, &#39;_rubbers_&#39;, &#39;de&#39;, &#39;vanité&#39;, &#39;,&#39;]
+[&#39;&lt;/s&gt;&#39;, &#39;points&#39;, &#39;à&#39;, &#39;la&#39;, &#39;vieille&#39;, &#39;et&#39;, &#39;qui&#39;]
+[&#39;&lt;/s&gt;&#39;, &#39;de&#39;, &#39;salle&#39;, &#39;où&#39;, &#39;il&#39;, &#39;m&#39;, &#34;&#39;&#34;]
+[&#39;était&#39;, &#39;drôlatique&#39;, &#34;l&#39;épigramme&#34;, &#39;de&#39;, &#39;rage&#39;, &#39;,&#39;, &#39;à&#39;]
+[&#39;par&#39;, &#39;le&#39;, &#39;secret&#39;, &#39;de&#39;, &#39;Béranger&#39;, &#39;?&#39;, &#39;&lt;/s&gt;&#39;]
+[&#39;de&#39;, &#34;s&#39;entendre&#34;, &#39;avec&#39;, &#39;lequel&#39;, &#39;il&#39;, &#39;aime&#39;, &#39;.&#39;]
+[&#39;voix&#39;, &#39;»&#39;, &#39;Je&#39;, &#39;ne&#39;, &#39;donne&#39;, &#39;partout&#39;, &#39;où&#39;]
+[&#39;mon&#39;, &#39;parc&#39;, &#39;situé&#39;, &#39;sur&#39;, &#39;leur&#39;, &#39;effort&#39;, &#39;à&#39;]
+[&#39;ville&#39;, &#39;;&#39;, &#39;désormais&#39;, &#39;le&#39;, &#39;chanvre&#39;, &#39;.&#39;, &#39;&lt;/s&gt;&#39;]
+[&#39;mil&#39;, &#39;...&#39;, &#39;--&#39;, &#39;Quand&#39;, &#39;,&#39;, &#39;rien&#39;, &#39;.&#39;]
+[&#39;rétabli&#39;, &#39;la&#39;, &#39;poste&#39;, &#39;en&#39;, &#39;pensant&#39;, &#39;que&#39;, &#39;ton&#39;]
+[&#39;ces&#39;, &#39;arabes&#39;, &#34;qu&#39;ils&#34;, &#39;analysent&#39;, &#39;.&#39;, &#39;&lt;/s&gt;&#39;, &#39;le&#39;]
+[&#39;&lt;s&gt;&#39;, &#39;Je&#39;, &#39;viens&#39;, &#39;,&#39;, &#39;ils&#39;, &#39;seront&#39;, &#39;incalculables&#39;]
+[&#39;manière&#39;, &#34;d&#39;être&#34;, &#34;l&#39;objet&#34;, &#34;d&#39;une&#34;, &#39;fièvre&#39;, &#39;et&#39;, &#39;de&#39;]
+[&#39;des&#39;, &#39;justes&#39;, &#39;.&#39;, &#39;&lt;/s&gt;&#39;, &#39;,&#39;, &#39;les&#39;, &#39;fractures&#39;]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">lm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[&#39;nombreux&#39;, &#39;.&#39;, &#39;&lt;/s&gt;&#39;, &#39;rapidement&#39;, &#39;que&#39;, &#34;l&#39;hiver&#34;, &#39;,&#39;, &#39;les&#39;, &#39;flancs&#39;, &#39;,&#39;, &#39;la&#39;, &#39;haine&#39;]
+[&#39;à&#39;, &#39;son&#39;, &#39;vieux&#39;, &#39;grognard&#39;, &#39;comme&#39;, &#39;mademoiselle&#39;, &#39;Cormon&#39;, &#39;,&#39;, &#39;à&#39;, &#39;son&#39;, &#39;ennemi&#39;, &#39;mortel&#39;]
+[&#39;&lt;s&gt;&#39;, &#39;Dans&#39;, &#39;cet&#39;, &#39;article&#39;, &#39;a&#39;, &#39;donc&#39;, &#39;été&#39;, &#39;donnée&#39;, &#39;à&#39;, &#39;Ursule&#39;, &#39;,&#39;, &#39;Gobseck&#39;]
+[&#39;,&#39;, &#39;pour&#39;, &#39;se&#39;, &#39;dit-elle&#39;, &#39;en&#39;, &#39;ouvrant&#39;, &#39;ou&#39;, &#39;ce&#39;, &#39;volume&#39;, &#39;in-18&#39;, &#39;qui&#39;, &#39;puissent&#39;]
+[&#39;les&#39;, &#39;rendre&#39;, &#39;...&#39;, &#39;»&#39;, &#39;Camusot&#39;, &#39;eut&#39;, &#39;assez&#39;, &#39;politique&#39;, &#39;du&#39;, &#39;boudoir&#39;, &#39;ovale&#39;, &#39;un&#39;]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
