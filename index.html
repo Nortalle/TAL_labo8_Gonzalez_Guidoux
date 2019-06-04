@@ -13116,7 +13116,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Labo-8-:-mod&#232;les-de-langage-/-Cloze-Test">Labo 8 : mod&#232;les de langage / Cloze Test<a class="anchor-link" href="#Labo-8-:-mod&#232;les-de-langage-/-Cloze-Test">&#182;</a></h1><p>Par Vincent Guidoux et Nathan Gonzalez Montes</p>
+<h1 id="Labo-8-:-mod&#232;les-de-langage-/-Cloze-Test">Labo 8 : mod&#232;les de langage / Cloze Test<a class="anchor-link" href="#Labo-8-:-mod&#232;les-de-langage-/-Cloze-Test">&#182;</a></h1><p>Par Guidoux Vincent et Gonzalez Montes Nathan</p>
 
 </div>
 </div>
@@ -13149,11 +13149,46 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># import cunni</span>
-<span class="kn">import</span> <span class="nn">antigravity</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">urllib</span> <span class="k">import</span> <span class="n">request</span>
+
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>[nltk_data] Downloading package punkt to
+[nltk_data]     C:\Users\Nortalle\AppData\Roaming\nltk_data...
+[nltk_data]   Package punkt is already up-to-date!
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[1]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>True</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13175,13 +13210,126 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">dl_gutenberg_raw</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dowloading </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2"> ... &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">raw</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">volume_1</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/ebooks/41211.txt.utf-8&quot;</span>
+<span class="n">volume_2</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/files/43851/43851-0.txt&quot;</span>
+<span class="n">volume_3</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/files/45060/45060-0.txt&quot;</span>
+<span class="n">volume_4</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/files/48082/48082-0.txt&quot;</span>
+<span class="n">volume_5</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/files/49482/49482-0.txt&quot;</span>
+<span class="n">volume_6</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/files/51381/51381-0.txt&quot;</span>
+<span class="n">volume_7</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/files/52831/52831-0.txt&quot;</span>
+<span class="n">volume_8</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/files/54723/54723-0.txt&quot;</span>
+<span class="n">volume_9</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/files/55860/55860-0.txt&quot;</span>
+<span class="n">volume_10</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/files/58244/58244-0.txt&quot;</span>
+
+<span class="n">balzac</span> <span class="o">=</span> <span class="p">[</span><span class="n">volume_1</span><span class="p">,</span> 
+          <span class="n">volume_2</span><span class="p">,</span> 
+          <span class="n">volume_3</span><span class="p">,</span> 
+          <span class="n">volume_4</span><span class="p">,</span> 
+          <span class="n">volume_5</span><span class="p">,</span> 
+          <span class="n">volume_6</span><span class="p">,</span> 
+          <span class="n">volume_7</span><span class="p">,</span> 
+          <span class="n">volume_8</span><span class="p">,</span>
+          <span class="n">volume_9</span><span class="p">,</span> 
+          <span class="n">volume_10</span><span class="p">]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">corpus</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<span class="k">for</span> <span class="n">volume_url</span> <span class="ow">in</span> <span class="n">balzac</span><span class="p">:</span>
+    <span class="n">corpus</span> <span class="o">+=</span> <span class="n">dl_gutenberg_raw</span><span class="p">(</span><span class="n">volume_url</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>dowloading &#34;https://www.gutenberg.org/ebooks/41211.txt.utf-8&#34; ... 
+dowloading &#34;https://www.gutenberg.org/files/43851/43851-0.txt&#34; ... 
+dowloading &#34;https://www.gutenberg.org/files/45060/45060-0.txt&#34; ... 
+dowloading &#34;https://www.gutenberg.org/files/48082/48082-0.txt&#34; ... 
+dowloading &#34;https://www.gutenberg.org/files/49482/49482-0.txt&#34; ... 
+dowloading &#34;https://www.gutenberg.org/files/51381/51381-0.txt&#34; ... 
+dowloading &#34;https://www.gutenberg.org/files/52831/52831-0.txt&#34; ... 
+dowloading &#34;https://www.gutenberg.org/files/54723/54723-0.txt&#34; ... 
+dowloading &#34;https://www.gutenberg.org/files/55860/55860-0.txt&#34; ... 
+dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ... 
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Il y a </span><span class="si">{}</span><span class="s2"> caractères dans ce corpus&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Il y a 12417968 caractères dans ce corpus
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
