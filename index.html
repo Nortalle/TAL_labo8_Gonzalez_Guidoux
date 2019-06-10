@@ -13155,6 +13155,7 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">codecs</span>
 <span class="kn">from</span> <span class="nn">urllib</span> <span class="k">import</span> <span class="n">request</span>
 <span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
 </pre></div>
@@ -13420,6 +13421,7 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 <span class="c1"># corpus_nettoye = corpus_nettoye.replace(&#39;\r\n.&#39;,&#39; &#39;) # on nettoie les retours à la ligne</span>
 <span class="c1"># corpus_nettoye = corpus_nettoye.replace(&#39;\r\n&#39;,&#39; &#39;) # on nettoie les retours à la ligne</span>
 <span class="n">corpus_nettoye</span> <span class="o">=</span> <span class="n">corpus_nettoye</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="c1"># on nettoie les _</span>
+<span class="n">corpus_nettoye</span> <span class="o">=</span> <span class="n">corpus_nettoye</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;--&#39;</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="c1"># on nettoie les _--</span>
 </pre></div>
 
     </div>
@@ -13462,7 +13464,7 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Il y a 101622 phrases dans le corpus
+<pre>Il y a 102617 phrases dans le corpus
 </pre>
 </div>
 </div>
@@ -13521,7 +13523,7 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Il y a 2335507 mots dans ce corpus
+<pre>Il y a 2320674 mots dans ce corpus
 </pre>
 </div>
 </div>
@@ -13641,7 +13643,7 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Il y a 98574 phrases dans le train_set et 3048 dans le test_set
+<pre>Il y a 99539 phrases dans le train_set et 3078 dans le test_set
 </pre>
 </div>
 </div>
@@ -13705,8 +13707,8 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 <div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">vocab</span> <span class="o">=</span> <span class="n">padded_everygram_pipeline</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">tokenized</span><span class="p">)</span>
-<span class="c1">#train, vocab = padded_everygram_pipeline(order, train_set)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># train, vocab = padded_everygram_pipeline(order, tokenized)</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">vocab</span> <span class="o">=</span> <span class="n">padded_everygram_pipeline</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">train_set</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13754,7 +13756,7 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Cela a pris 92.966 secondes pour entraîner le modèle d&#39;ordre 5
+<pre>Cela a pris 102.521 secondes pour entraîner le modèle d&#39;ordre 5
 </pre>
 </div>
 </div>
@@ -13837,67 +13839,10 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 <div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">print_generated_sentence</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># print_generated_sentence(8, 20)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>0. semblables à celles du serpent , peuvent à 
-
-1. utilité . 
-
-2. politique . 
-
-3. pronostics de ma mère . 
-
-4. 
-
-5. suffit à faire comprendre l&#39;importance des petits détails 
-
-6. mots spirituels qu&#39;elle disait à tout propos et 
-
-7. la première fois depuis long-temps , le bonheur 
-
-8. 
-
-9. 
-
-10. il accumule tant de petites pièces et de 
-
-11. je n&#39;ai pas attendu , dans 
-
-12. -- oh ! 
-
-13. pierrotin cria un certain hi ! 
-
-14. ferait un intendant . 
-
-15. ceux qui vous ont haïe ou blessée . 
-
-16. de maternel . 
-
-17. 
-
-18. , mène à la maison par une laiterie 
-
-19. : —hé ! 
-
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13907,127 +13852,10 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 <div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">print_generated_sentence</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># print_generated_sentence(25, 50)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>0. dans ce temps-là , faisaient de la monarchie et de la religion , attendrie par tant de repentir , bettina ne s&#39;endormit pas sans 
-
-1. possible de ces magnifiques intuitions . 
-
-2. , dans l&#39;intérêt public bien entendu . 
-
-3. en toi ; en toi que je regardais comme le plus pur des vendéens . 
-
-4. « sa » ( la noblesse dans toute sa beauté ) . 
-
-5. le redoutait , semblable au malheureux condamné à mort qui voudrait en avoir fini avec la vie , enfant , et j&#39;ai peur que ce 
-
-6. leur proie . 
-
-7. de clagny , voulut le faire enrager par une de ces œuvres dont parlent les jeunes gens , montés sur des si , franchissent toutes 
-
-8. 
-
-9. qui , pour la distinguer des galeries-de-bois . 
-
-10. 
-
-11. ? 
-
-12. et se défont . 
-
-13. madame de vandenesse fît une petite moue quand il voulait se dispenser d&#39;être à un bal , à un concert , à une promenade , 
-
-14. a pas exemple de deux hommes parvenus par une même voie . 
-
-15. est grand . 
-
-16. ce sera le dieu des jardins ! 
-
-17. patins en fer , vêtue d&#39;indienne et mal tenue , ne pouvait être qu&#39;un noir scélérat . 
-
-18. partie . 
-
-19. ! 
-
-20. et , notez ce point ! 
-
-21. signé ? 
-
-22. 
-
-23. admirateurs , de balzac . 
-
-24. auquel elles sont soumises n &#39; a pu , dit ursule , mais un homme d&#39;une puissance extraordinaire , un homme aussi grand qu&#39;on peut 
-
-25. ses filles , hein ? 
-
-26. rendaient à la sainte beauté . 
-
-27. néanmoins madame de rochefide , au milieu du dos , et produisit entre le gilet et le pantalon une solution de 
-
-28. chaque fois qu&#39;il sortait de chez madame d&#39;aiglemont , la mise était en harmonie avec les sentiments . 
-
-29. 
-
-30. composition , si vous m&#39;offrez le temps et l&#39;espace , à force de parler éternité , de perpétuer l&#39;amour du général en ce monde et 
-
-31. 
-
-32. tracassiers , sans âme et d&#39;une économie sordide , le frère et la sœur se consultaient sur leurs intentions . 
-
-33. , sa compassion s&#39;exerçait sur un autre que sur elle-même et sur ses privations . 
-
-34. dauriat tint lieu de conscience et d&#39;inspiration . 
-
-35. , dans la manière dont il le soldait , tout en disant de mois en mois , au fond du cœur ? 
-
-36. , lui , qu&#39;il devait mademoiselle grandet à un dépit amoureux ; aussi s&#39;empressa-t-il d&#39;exécuter ses ordres avec la plus grande attention . 
-
-37. , une provision de chocolat , et tous les moyens de séduction , et enleva caroline . 
-
-38. madame la comtesse sans vous en prévenir ; mais il m &#39; a paru vide , et il a bien trouvé son lot ; il 
-
-39. un galant homme , un homme de saint-flour . 
-
-40. , n&#39;est-ce pas des peccadilles commises à tous les étages ; le piéton industriel , armé d&#39;une sacoche ou muni d&#39;un paquet , traduisant la 
-
-41. fut entraîné par lousteau qui ne lui laissa pas le temps de se reconnaître . 
-
-42. pas trouvés assez aimables , dit l&#39;abbé troubert aux amis de mademoiselle gamard lorsqu&#39;elle fut obligée de renoncer à ses soirées . 
-
-43. le froid regard des gens d&#39;affaires , devina les sentiments qui l&#39;agitaient et lui dit : —ma mère , voilà un monsieur qui veut vous 
-
-44. ceux qui sont arrivés , quibuscumque viis , à la politique , elles jugèrent , avec ce tact particulier aux femmes , eut bientôt deviné 
-
-45. appuyé par les banquiers royalistes du tillet et nucingen , le président tiphaine eut occasion de rendre service au ministère , il fut un de 
-
-46. mois se passèrent . 
-
-47. il se coucha et s&#39;endormit accablé de fatigue . 
-
-48. voilà ma vie , toute ma vie , je ne m&#39;immiscerais , certes , en aucune manière dans les affaires d&#39;un homme 
-
-49. autrement que par oui et non aux demandes , naturelles en semblable occurrence , les gobseck , les palma , les werbrust et gigonnet , 
-
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -14098,10 +13926,112 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">lm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">text_seed</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;David&#39;</span><span class="p">,</span> <span class="s1">&#39;Jaquet&#39;</span><span class="p">,</span><span class="s1">&#39;est&#39;</span><span class="p">,</span> <span class="s1">&#39;un&#39;</span><span class="p">],</span> <span class="n">num_words</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[40]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[&#39;trésor&#39;, &#39;immense&#39;]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">loose_word</span> <span class="o">=</span> <span class="mi">7</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">is_longer_than</span><span class="p">(</span><span class="n">variable</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">loose_word</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">filtered</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">is_longer_than</span><span class="p">,</span> <span class="n">test_set</span><span class="p">)</span>
+
+<span class="n">filtered</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">filtered</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Il y a </span><span class="si">{}</span><span class="s2"> phrases de 7+ mots dans le train set&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">filtered</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Il y a 2577 phrases de 7+ mots dans le train set
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">list_to_sentence</span><span class="p">(</span><span class="n">list_of_words</span><span class="p">):</span>
+    <span class="n">sentence</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">list_of_words</span><span class="p">:</span>
+        <span class="n">sentence</span> <span class="o">+=</span> <span class="n">word</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+    <span class="k">return</span> <span class="n">sentence</span> 
 </pre></div>
 
     </div>
@@ -14119,16 +14049,92 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#for word_nb in range(2,3):</span>
+<span class="n">gessed_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">sentence</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">filtered</span><span class="p">[:</span><span class="mi">40000</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="c1">#         print(&quot;current sentence :&quot;, list_to_sentence(sentence))</span>
+<span class="c1">#         print(&quot;mots à tester : &quot;, list_to_sentence(sentence[2:6]))</span>
+    <span class="n">gessed_word</span> <span class="o">=</span> <span class="n">lm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">text_seed</span><span class="o">=</span><span class="n">lm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">text_seed</span><span class="o">=</span><span class="n">sentence</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">],</span> <span class="n">num_words</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c1"># print(&quot;mot découvert : &quot;, gessed_word)</span>
+    <span class="k">if</span> <span class="n">gessed_word</span> <span class="o">==</span> <span class="n">sentence</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span>
+<span class="c1">#             print(&quot;current sentence :&quot;, list_to_sentence(sentence))</span>
+<span class="c1">#             print(&quot;gessed sentence : {}{} {}&quot;.format(list_to_sentence(sentence[:6]),gessed_word,list_to_sentence(sentence[7:])) )</span>
+<span class="c1">#             print(&quot;\n&quot;)</span>
+        <span class="n">gessed_words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gessed_word</span><span class="p">)</span>
+        
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+1000
+2000
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">gessed_words</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[46]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{&#39;,&#39;, &#39;.&#39;, &#39;et&#39;, &#39;une&#39;}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>{'!', ',', '.', 'belle', 'et', 'la', 'que', 'sa', '|'}</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -14140,13 +14146,34 @@ dowloading &#34;https://www.gutenberg.org/files/58244/58244-0.txt&#34; ...
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">word_nb</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">word_nb</span><span class="p">)</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2
+3
+4
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
